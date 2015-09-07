@@ -9,6 +9,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
+#include <errno.h>
 
 #define KILO (1024)
 #define MEGA (1024 * 1024)
@@ -24,7 +25,7 @@ uint32_t pcg32_random_r(pcg32_random_t* rng)
 {
     uint64_t oldstate = rng->state;
     // Advance internal state
-    rng->state = oldstate * 6364136223846793005ULL + (rng->inc|1);
+    rng->state = oldstate * 6364136223846793005ULL + (rng->inc | 1);
     // Calculate output function (XSH RR), uses old state for max ILP
     uint32_t xorshifted = ((oldstate >> 18u) ^ oldstate) >> 27u;
     uint32_t rot = oldstate >> 59u;
@@ -33,7 +34,7 @@ uint32_t pcg32_random_r(pcg32_random_t* rng)
 pcg32_random_t pcg32_random;
 
 void seed_pcg_random() {
-    pcg32_random.state ^= (uint64_t)time(NULL) ^ (uint64_t)&seed_pcg_random;    
+    pcg32_random.state ^= (uint64_t)time(NULL) ^ (uint64_t)&seed_pcg_random;
 }
 
 //=============================================================================
@@ -51,30 +52,30 @@ void fill_buffer( uint32_t* buff, int size )
 // Convert file size with k|m|g|t modifiers into size in bytes.
 //=============================================================================
 long long size_to_bytes( char *file_size ) {
-    size_t len = strlen(file_size);
+    size_t len = strlen( file_size );
     long long ret = 0;
     long long part = 0;
-    for (size_t i = 0; i < len; i++) {
-        if (isdigit(file_size[i])) {
-            part = part * 10 + (file_size[i] - '0');
+    for ( size_t i = 0; i < len; i++ ) {
+        if ( isdigit( file_size[ i ] ) ) {
+            part = part * 10 + ( file_size[ i ] - '0' );
         } else {
-            int modifier = tolower(file_size[i]);
-            switch (modifier) {
-                case 'k':
-                    ret += part * KILO;
-                    part = 0;
-                case 'm':
-                    ret += part * MEGA;
-                    part = 0;
-                case 'g':
-                    ret += part * GIGA;
-                    part = 0;
-                case 't':
-                    ret += part * TERA;
-                    part = 0;
-                default:
-                    ret += part;
-                    part = 0;
+            int modifier = tolower( file_size[ i ] );
+            switch ( modifier ) {
+            case 'k':
+                ret += part * KILO;
+                part = 0;
+            case 'm':
+                ret += part * MEGA;
+                part = 0;
+            case 'g':
+                ret += part * GIGA;
+                part = 0;
+            case 't':
+                ret += part * TERA;
+                part = 0;
+            default:
+                ret += part;
+                part = 0;
             }
         }
     }
@@ -92,19 +93,14 @@ void run_tests() {
 }
 
 //=============================================================================
-long long parse_arguments( int argc, char* argv[] ) {
-    if ( argc != 3 ) {
-        return -1;
-    }
-    return size_to_bytes( argv[ 1 ] );
-}
-
-//=============================================================================
 int mkrandom( long long file_size, char *file_name ) {
     long page_size = sysconf( _SC_PAGESIZE );
     uint32_t *buff = malloc( page_size );
     FILE* pFile = fopen( file_name, "wb" );
-    setvbuf(pFile, NULL, _IOFBF, BUFSIZ);
+    if (pFile == NULL) {
+        perror(file_name);
+        return 1;
+    }
     long long num_pages = file_size / page_size;
     long long tail_size = file_size % page_size;
     for ( long long i = 0; i < num_pages; i++ ) {
@@ -120,22 +116,13 @@ int mkrandom( long long file_size, char *file_name ) {
 }
 
 //=============================================================================
-int print_help() {
-    printf( "usage: mkrandom size[k|m|g|t] filename\n" );
-    return 1;
-}
-
-//=============================================================================
 int main( int argc, char* argv[] )
-{    
+{
     run_tests();
     seed_pcg_random();
-    long long file_size = parse_arguments( argc, argv );
-    if ( file_size <= 0) {
-        return print_help();
+    if ( argc != 3 ) {
+        printf( "usage: mkrandom size[k|m|g|t] filename\n" );
+        return 1;
     }
-    if (mkrandom( file_size, argv[ 2 ] ) != 0) {
-        return print_help();
-    }
-    return 0;
+    return mkrandom( size_to_bytes( argv[ 1 ] ), argv[ 2 ] );
 }
