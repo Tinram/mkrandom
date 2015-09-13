@@ -1,10 +1,12 @@
+#################################################
+# Makefile for Linux and MaxOSX
+#################################################
+
 UNAME := $(shell uname -s)
 
 ifeq ($(UNAME),Darwin)
-	# MacOSX
 	CC=clang
 else
-	# Unix/Linux
 	CC=gcc
 endif
 

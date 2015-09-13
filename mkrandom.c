@@ -8,7 +8,6 @@
 #include <time.h>
 #include <string.h>
 #include <ctype.h>
-#include <unistd.h>
 #include <errno.h>
 
 #define KILO ((size_t)1024)
@@ -94,7 +93,7 @@ void run_tests() {
 
 //=============================================================================
 int mkrandom( size_t file_size, char *file_name ) {
-    long page_size = sysconf( _SC_PAGESIZE );
+    long page_size = 4 * KILO; // TODO: is this optimal?
     uint32_t *buff = malloc( page_size );
     FILE* pFile = fopen( file_name, "wb" );
     if (pFile == NULL) {
