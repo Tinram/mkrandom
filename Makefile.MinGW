@@ -1,0 +1,20 @@
+#################################################
+# Makefile for Windows with MinGW gcc compiler
+# Start msys console: C:\MinGW\msys\1.0\msys.bat
+# run make -f Makefile.MingGW
+#################################################
+
+CC=gcc
+CFLAGS=-std=c99 -O2 -Wall
+
+all:
+	$(CC) $(CFLAGS) mkrandom.c -o mkrandom
+
+test:
+	# create a random file and see if filesize matches
+	./mkrandom.exe 3m27k315 mkrandom_test.bin
+	ls -l mkrandom_test.bin | grep 3173691
+	rm mkrandom_test.bin
+
+clean:
+	rm mkrandom.exe
