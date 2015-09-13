@@ -10,11 +10,12 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <errno.h>
+#include <inttypes.h>
 
-#define KILO (1024)
-#define MEGA (1024 * 1024)
-#define GIGA (1024 * 1024 * 1024)
-#define TERA (1024 * 1024 * 1024 * 1024)
+#define KILO ((size_t)1024)
+#define MEGA (KILO * 1024)
+#define GIGA (MEGA * 1024)
+#define TERA (GIGA * 1024)
 
 //=============================================================================
 // *Really* minimal PCG32 code / (c) 2014 M.E. O'Neill / pcg-random.org
@@ -51,10 +52,10 @@ void fill_buffer( uint32_t* buff, int size )
 //=============================================================================
 // Convert file size with k|m|g|t modifiers into size in bytes.
 //=============================================================================
-long long size_to_bytes( char *file_size ) {
+size_t size_to_bytes( char *file_size ) {
     size_t len = strlen( file_size );
-    long long ret = 0;
-    long long part = 0;
+    size_t ret = 0;
+    size_t part = 0;
     for ( size_t i = 0; i < len; i++ ) {
         if ( isdigit( file_size[ i ] ) ) {
             part = part * 10 + ( file_size[ i ] - '0' );
@@ -87,13 +88,13 @@ void run_tests() {
     assert(size_to_bytes("123456") == 123456);
     assert(size_to_bytes("300k") == 300 * KILO);
     assert(size_to_bytes("20m") == 20 * MEGA);
-    assert(size_to_bytes("177g") == 177L * GIGA);
-    assert(size_to_bytes("5t") == 5LL * 1024 * TERA);
-    assert(size_to_bytes("3t25g217m1011k273") == 3LL * TERA + 25LL * GIGA + 217LL * MEGA + 1011LL * KILO + 273);
+    assert(size_to_bytes("177g") == 177 * GIGA);
+    assert(size_to_bytes("5t") == 5 * TERA);
+    assert(size_to_bytes("3t25g217m1011k273") == 3 * TERA + 25 * GIGA + 217 * MEGA + 1011 * KILO + 273);
 }
 
 //=============================================================================
-int mkrandom( long long file_size, char *file_name ) {
+int mkrandom( size_t file_size, char *file_name ) {
     long page_size = sysconf( _SC_PAGESIZE );
     uint32_t *buff = malloc( page_size );
     FILE* pFile = fopen( file_name, "wb" );
@@ -101,9 +102,9 @@ int mkrandom( long long file_size, char *file_name ) {
         perror(file_name);
         return 1;
     }
-    long long num_pages = file_size / page_size;
-    long long tail_size = file_size % page_size;
-    for ( long long i = 0; i < num_pages; i++ ) {
+    size_t num_pages = file_size / page_size;
+    size_t tail_size = file_size % page_size;
+    for ( size_t i = 0; i < num_pages; i++ ) {
         fill_buffer( buff, page_size / sizeof( uint32_t ) );
         fwrite( buff, page_size, 1, pFile );
     }
