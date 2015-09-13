@@ -1,5 +1,5 @@
 #################################################
-# Makefile for Windows with Visual C++ compiler
+# Makefile for Windows using Visual C++ compiler
 # Start Developer Command Prompt
 # run nmake -f Makefile.MSVC
 #################################################
