@@ -10,7 +10,6 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <errno.h>
-#include <inttypes.h>
 
 #define KILO ((size_t)1024)
 #define MEGA (KILO * 1024)
