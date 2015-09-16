@@ -9,11 +9,12 @@
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
+#include <inttypes.h>
 
-#define KILO ((size_t)1024)
-#define MEGA (KILO * 1024)
-#define GIGA (MEGA * 1024)
-#define TERA (GIGA * 1024)
+#define KILO 0x400ULL
+#define MEGA 0x100000ULL
+#define GIGA 0x40000000ULL
+#define TERA 0x10000000000ULL
 
 //=============================================================================
 // *Really* minimal PCG32 code / (c) 2014 M.E. O'Neill / pcg-random.org
@@ -50,10 +51,10 @@ void fill_buffer( uint32_t* buff, int size )
 //=============================================================================
 // Convert file size with k|m|g|t modifiers into size in bytes.
 //=============================================================================
-size_t size_to_bytes( char *file_size ) {
+uintmax_t size_to_bytes( char *file_size ) {
     size_t len = strlen( file_size );
-    size_t ret = 0;
-    size_t part = 0;
+    uintmax_t ret = 0;
+    uintmax_t part = 0;
     for ( size_t i = 0; i < len; i++ ) {
         if ( isdigit( file_size[ i ] ) ) {
             part = part * 10 + ( file_size[ i ] - '0' );
@@ -92,14 +93,14 @@ void run_tests() {
 }
 
 //=============================================================================
-int mkrandom( size_t file_size, char *file_name, size_t bs ) {
+int mkrandom( uintmax_t file_size, char *file_name, size_t bs ) {
     uint32_t *buff = malloc( bs );
     if (buff == NULL) goto out_nomem;
     FILE* pFile = fopen( file_name, "wb" );
     if (pFile == NULL) goto out_fopen_failed;
-    size_t num_pages = file_size / bs;
+    uintmax_t num_pages = file_size / bs;
     size_t tail_size = file_size % bs;
-    for ( size_t i = 0; i < num_pages; i++ ) {
+    for ( uintmax_t i = 0; i < num_pages; i++ ) {
         fill_buffer( buff, bs / sizeof( uint32_t ) );
         size_t bw = fwrite( buff, bs, 1, pFile );
         if ( bw != 1 ) goto out_write_failed;

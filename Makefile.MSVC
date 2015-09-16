@@ -5,7 +5,7 @@
 #################################################
 
 CC=cl
-CFLAGS=/TC /O2 /Wall
+CFLAGS=/TC /O2 /W4
 
 all:
 	$(CC) $(CFLAGS) mkrandom.c
