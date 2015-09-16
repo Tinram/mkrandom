@@ -1,0 +1,22 @@
+#################################################
+# Makefile for Windows using Visual C++ compiler
+# Start Developer Command Prompt
+# run nmake -f Makefile.MSVC
+#################################################
+
+CC=cl
+CFLAGS=/TC /O2 /Wall
+
+all:
+	$(CC) $(CFLAGS) mkrandom.c
+
+test:
+# create a random file and see if filesize matches
+	mkrandom.exe 3m27k315 mkrandom_test.bin
+#ls -l mkrandom_test.bin | grep 3173691 # how to do this in windows cmd?
+	del mkrandom_test.bin
+
+clean:
+	del mkrandom.exe
+	del mkrandom.obj
+

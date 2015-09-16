@@ -1,5 +1,5 @@
 #################################################
-# Makefile for Windows with MinGW gcc compiler
+# Makefile for Windows using MinGW gcc compiler
 # Start msys console: C:\MinGW\msys\1.0\msys.bat
 # run make -f Makefile.MingGW
 #################################################
