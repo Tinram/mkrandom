@@ -92,26 +92,35 @@ void run_tests() {
 }
 
 //=============================================================================
-int mkrandom( size_t file_size, char *file_name ) {
-    long page_size = 4 * KILO; // TODO: is this optimal?
-    uint32_t *buff = malloc( page_size );
+int mkrandom( size_t file_size, char *file_name, size_t bs ) {
+    uint32_t *buff = malloc( bs );
+    if (buff == NULL) goto out_nomem;
     FILE* pFile = fopen( file_name, "wb" );
-    if (pFile == NULL) {
-        perror(file_name);
-        return 1;
-    }
-    size_t num_pages = file_size / page_size;
-    size_t tail_size = file_size % page_size;
+    if (pFile == NULL) goto out_fopen_failed;
+    size_t num_pages = file_size / bs;
+    size_t tail_size = file_size % bs;
     for ( size_t i = 0; i < num_pages; i++ ) {
-        fill_buffer( buff, page_size / sizeof( uint32_t ) );
-        fwrite( buff, page_size, 1, pFile );
+        fill_buffer( buff, bs / sizeof( uint32_t ) );
+        size_t bw = fwrite( buff, bs, 1, pFile );
+        if ( bw != 1 ) goto out_write_failed;
     }
     if ( tail_size > 0 ) {
-        fill_buffer( buff, page_size / sizeof( uint32_t ) );
-        fwrite( buff, tail_size, 1, pFile );
+        fill_buffer( buff, bs / sizeof( uint32_t ) );
+        size_t bw = fwrite( buff, tail_size, 1, pFile );
+        if ( bw != 1 ) goto out_write_failed;
     }
     fclose( pFile );
     return 0;
+out_write_failed:
+    perror( file_name );
+    fclose( pFile );
+    return -1;
+out_nomem:
+    perror( "buffer" );
+    return errno;
+out_fopen_failed:
+    perror( file_name );
+    return errno;
 }
 
 //=============================================================================
@@ -123,5 +132,7 @@ int main( int argc, char* argv[] )
         printf( "usage: mkrandom size[k|m|g|t] filename\n" );
         return 1;
     }
-    return mkrandom( size_to_bytes( argv[ 1 ] ), argv[ 2 ] );
+    size_t block_size = 4 * KILO;
+    size_t buffer_size = 16 * block_size;
+    return mkrandom( size_to_bytes( argv[ 1 ] ), argv[ 2 ], buffer_size );
 }
