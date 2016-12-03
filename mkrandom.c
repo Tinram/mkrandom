@@ -34,7 +34,12 @@ uint32_t pcg32_random_r(pcg32_random_t* rng)
 pcg32_random_t pcg32_random;
 
 void seed_pcg_random() {
+    // randomness from timer and memory address
     pcg32_random.state ^= (uint64_t)time(NULL) ^ (uint64_t)&seed_pcg_random;
+    // generate a dozen of integers for initial state to diverge
+    for ( int i = 0; i < 12; i++ ) {
+        pcg32_random_r( &pcg32_random );
+    }
 }
 
 //=============================================================================
