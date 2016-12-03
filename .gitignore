@@ -21,8 +21,6 @@
 *.dylib
 
 # Executables
-mkrandom
-*.exe
 *.out
 *.app
 *.i*86
