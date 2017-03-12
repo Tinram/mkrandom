@@ -10,13 +10,13 @@ http://www.pcg-random.org/
 ## Download for OS X 
 ```
 curl -o mkrandom -L https://github.com/cohadar/mkrandom/blob/master/bin/darwin/amd64/mkrandom?raw=true
-chmod +x ./mkrandom && mv ./mkrandom /usr/local/bin/mkrandom
+chmod +x ./mkrandom && sudo mv ./mkrandom /usr/local/bin/mkrandom
 ```
 
 ## Download for Linux
 ```
 curl -o mkrandom -L https://github.com/cohadar/mkrandom/blob/master/bin/linux/amd64/mkrandom?raw=true
-chmod +x ./mkrandom && mv ./mkrandom /usr/local/bin/mkrandom
+chmod +x ./mkrandom && sudo mv ./mkrandom /usr/local/bin/mkrandom
 ```
 
 ## Download for Windows
