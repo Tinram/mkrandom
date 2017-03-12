@@ -16,7 +16,7 @@ curl -o mkrandom -L https://github.com/cohadar/mkrandom/blob/master/bin/darwin_a
 curl -o mkrandom -L https://github.com/cohadar/mkrandom/blob/master/bin/linux_x86_64/mkrandom?raw=true
 
 # Windows
-curl -o mkrandom.exe -L https://github.com/cohadar/mkrandom/blob/master/bin/windows7_x86_64/mkrandom.exe?raw=true
+curl -o mkrandom.exe -UseBasicParsing https://github.com/cohadar/mkrandom/blob/master/bin/windows7_x86_64/mkrandom.exe?raw=true
 ```
 
 ## Make the mkrandom binary executable and move it to your PATH (e.g. /usr/local/bin):
