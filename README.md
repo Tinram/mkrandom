@@ -7,16 +7,18 @@ http://www.pcg-random.org/
 # Usage 
 `mkrandom size[k|m|g|t] filename`
 
-## Download mkrandom binary via curl
+## Download for OS X 
 ```
-# OS X
-curl -o mkrandom -L https://github.com/cohadar/mkrandom/blob/master/bin/darwin_amd64/mkrandom?raw=true
-chmod +x ./mkrandom && mv ./mkrandom /usr/local/bin/mkrandom
-
-# Linux
-curl -o mkrandom -L https://github.com/cohadar/mkrandom/blob/master/bin/linux_x86_64/mkrandom?raw=true
+curl -o mkrandom -L https://github.com/cohadar/mkrandom/blob/master/bin/darwin/amd64/mkrandom?raw=true
 chmod +x ./mkrandom && mv ./mkrandom /usr/local/bin/mkrandom
 ```
 
-## Download windows executable
-[click here](https://github.com/cohadar/mkrandom/blob/master/bin/windows7_x86_64/mkrandom.exe?raw=true)
+## Download for Linux
+```
+curl -o mkrandom -L https://github.com/cohadar/mkrandom/blob/master/bin/linux/amd64/mkrandom?raw=true
+chmod +x ./mkrandom && mv ./mkrandom /usr/local/bin/mkrandom
+```
+
+## Download for Windows
+* [mkrandom.exe (64-bit)](https://github.com/cohadar/mkrandom/blob/master/bin/windows/386/mkrandom.exe?raw=true)
+* [mkrandom.exe (32-bit)](https://github.com/cohadar/mkrandom/blob/master/bin/windows/amd64/mkrandom.exe?raw=true)

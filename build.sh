@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+set -u
 set -e
+set -v
 
 env GOOS=darwin GOARCH=386 go build -o bin/darwin/386/mkrandom
 env GOOS=darwin GOARCH=amd64 go build -o bin/darwin/amd64/mkrandom
