@@ -41,7 +41,7 @@ The main program revision is stream output in addition to file output.
 
 #### Size
 
-An 11kB C ELF executable is great; I'm not so keen on ferrying around the 1.9MB Go executable.
+An 11kB C ELF executable is great; I'm not so keen on ferrying around the 1.9MB Go executable equivalent.
 
 #### Language
 
@@ -76,4 +76,4 @@ Output data will be to file if the optional filename is specified, else to *stdo
 
 ## License
 
-*mkrandom* is released under [Codahar's MIT License](https://github.com/cohadar/mkrandom).
+*mkrandom* is released under [Codahar's MIT License](https://github.com/cohadar/mkrandom/blob/master/LICENSE).
