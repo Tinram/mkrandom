@@ -1,24 +1,79 @@
+
 # mkrandom
-Fast random binary file generator 
 
-Files are incompressible and have good statistical properties:
-http://www.pcg-random.org/
+#### Fast random data stream and file generator.
 
-# Usage 
-`mkrandom size[k|m|g|t] filename`
 
-## Download for OS X 
-```
-curl -o mkrandom -L https://github.com/cohadar/mkrandom/blob/master/bin/darwin/amd64/mkrandom?raw=true
-chmod +x ./mkrandom && sudo mv ./mkrandom /usr/local/bin/mkrandom
-```
+## Background
 
-## Download for Linux
-```
-curl -o mkrandom -L https://github.com/cohadar/mkrandom/blob/master/bin/linux/amd64/mkrandom?raw=true
-chmod +x ./mkrandom && sudo mv ./mkrandom /usr/local/bin/mkrandom
-```
+Damir Cohadarevic ([Codahar](https://github.com/cohadar)) has created a deceptively simple program in *mkrandom*.
 
-## Download for Windows
-* [mkrandom.exe (64-bit)](https://github.com/cohadar/mkrandom/blob/master/bin/windows/386/mkrandom.exe?raw=true)
-* [mkrandom.exe (32-bit)](https://github.com/cohadar/mkrandom/blob/master/bin/windows/amd64/mkrandom.exe?raw=true)
+It's an example of something greater than the sum of its parts.
+
+*mkrandom* combines the highly promising [PCG](http://www.pcg-random.org/) random number generator with chunked output to create a blazingly fast data generator.
+
+[PCG](http://www.pcg-random.org/), created by Melissa E. O'Neill (Professor of Computer Science at a US College), is a fast random number generator with statistically good output.
+
+
+## Purpose
+
+Quickly generate large files and large streams of random data (GB, to perhaps TB in size).
+
+
+## Uses
+
+File hashing, integrity tests, benchmarking, network speed tests ... and probably, if the intent is abuse, HDD and SSD destruction.
+
+
+## OS Support
+
++ Linux x64
++ Windows x64
+
+
+## [C Version](https://github.com/Tinram/mkrandom/tree/c_legacy)
+
+I've added a slightly revised version of Codahar's original *mkrandom* C program into a new [branch](https://github.com/Tinram/mkrandom/tree/c_legacy) of this forked repo.
+
+The main program revision is stream output in addition to file output.
+
+### Why C?
+
+#### Size
+
+An 11kB C ELF executable is great; I'm not so keen on ferrying around the 1.9MB Go executable.
+
+#### Language
+
+I'm more familiar with C than Go.  My Go education is on hold.
+
+
+## Usage
+
+        ./mkrandom <size><k|m|g|t> [filename]
+
+        mkrandom.exe <size><k|m|g|t> [filename]
+
+Output data will be to file if the optional filename is specified, else to *stdout*, meaning a stream which can be piped to another program (or without a pipe specified, to the terminal ...).
+
+
+## Executables
+
+### Linux
+
++ [mkrandom](https://github.com/Tinram/mkrandom/blob/c_legacy/bin/linux/amd64/c/mkrandom?raw=true)
+
+### Windows
+
++ [mkrandom.exe](https://github.com/Tinram/mkrandom/blob/c_legacy/bin/windows/amd64/c/mkrandom.exe?raw=true)
+
+
+## References
+
++ [PCG](http://www.pcg-random.org/)
++ [mkrandom](https://github.com/cohadar/mkrandom)
+
+
+## License
+
+*mkrandom* is released under [Codahar's MIT License](https://github.com/cohadar/mkrandom).
