@@ -8,9 +8,9 @@
 
 Damir Cohadarevic ([Codahar](https://github.com/cohadar)) has created a deceptively simple program in *mkrandom*.
 
-It's an example of something greater than the sum of its parts.
+It's an example of something greater than its separate parts.
 
-*mkrandom* combines the highly promising [PCG](http://www.pcg-random.org/) random number generator with chunked output to create a blazingly fast data generator.
+*mkrandom* combines the highly promising [PCG](http://www.pcg-random.org/) random number generator with chunked output to create a blazingly fast junk data generator.
 
 [PCG](http://www.pcg-random.org/), created by Melissa E. O'Neill (Professor of Computer Science at a US College), is a fast random number generator with statistically good output.
 
@@ -35,7 +35,7 @@ File hashing, integrity tests, benchmarking, network speed tests ... and probabl
 
 I've added a slightly revised version of Codahar's original *mkrandom* C program into a new [branch](https://github.com/Tinram/mkrandom/tree/c_legacy) of this forked repo.
 
-The main program revision is stream output in addition to file output.
+The main revision is stream output in addition to file output.
 
 ### Why C?
 
@@ -61,11 +61,11 @@ Output data will be to file if the optional filename is specified, else to *stdo
 
 ### Linux
 
-+ [mkrandom](https://github.com/Tinram/mkrandom/blob/c_legacy/bin/linux/amd64/c/mkrandom?raw=true)
++ [mkrandom](https://github.com/Tinram/mkrandom/raw/c_legacy/bin/linux/amd64/c/mkrandom)
 
 ### Windows
 
-+ [mkrandom.exe](https://github.com/Tinram/mkrandom/blob/c_legacy/bin/windows/amd64/c/mkrandom.exe?raw=true)
++ [mkrandom.exe](https://github.com/Tinram/mkrandom/raw/c_legacy/bin/windows/amd64/c/mkrandom.exe)
 
 
 ## References
